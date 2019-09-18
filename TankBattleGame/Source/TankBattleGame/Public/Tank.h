@@ -37,14 +37,14 @@ protected:
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	UPROPERTY(EditAnywhere, Category = Firing, DisplayName = Velocity)
+	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = Velocity)
 		float m_FiringVelocity = 50000.f;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 		TSubclassOf<AProjectile> m_sphereProjectile;
 
 	UTankBarrel* m_Barrel = nullptr;
-
+	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = Reload Time)
 	float m_ReloadTimeInSeconds = 3.f;
 	double m_LastFireTime = 0;
 };
