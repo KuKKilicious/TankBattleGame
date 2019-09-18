@@ -11,6 +11,7 @@
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 UCLASS()
 class TANKBATTLEGAME_API ATank : public APawn
 {
@@ -23,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurretReference(UTankTurret* BarrelToSet);
+		void SetTurretReference(UTankTurret* BarrelToSet);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 protected:
@@ -36,6 +37,14 @@ protected:
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	UPROPERTY(EditAnywhere,Category =Firing, DisplayName = Velocity)
+	UPROPERTY(EditAnywhere, Category = Firing, DisplayName = Velocity)
 		float m_FiringVelocity = 50000.f;
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+		TSubclassOf<AProjectile> m_sphereProjectile;
+
+	UTankBarrel* m_Barrel = nullptr;
+
+	float m_ReloadTimeInSeconds = 3.f;
+	double m_LastFireTime = 0;
 };
