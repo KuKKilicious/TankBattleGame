@@ -40,13 +40,8 @@ void ATank::Fire()
 	{
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(m_sphereProjectile,m_Barrel->GetSocketLocation(FName("Projectile")),m_Barrel->GetSocketRotation(FName("Projectile")));
 		projectile->LaunchProjectile(m_FiringVelocity);
-		UE_LOG(LogTemp, Warning, TEXT("Fire"));
 		m_LastFireTime = FPlatformTime::Seconds();
 	}
-
-
-	
-
 
 }
 

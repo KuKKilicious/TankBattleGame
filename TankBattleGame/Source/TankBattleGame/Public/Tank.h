@@ -44,7 +44,7 @@ private:
 		TSubclassOf<AProjectile> m_sphereProjectile;
 
 	UTankBarrel* m_Barrel = nullptr;
-	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = Reload Time)
+	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = ReloadTime)
 	float m_ReloadTimeInSeconds = 3.f;
 	double m_LastFireTime = 0;
 };
