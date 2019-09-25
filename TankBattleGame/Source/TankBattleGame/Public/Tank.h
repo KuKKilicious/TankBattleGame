@@ -21,18 +21,16 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 	void AimAt(FVector aimLocation);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetBarrelReference(UTankBarrel* BarrelToSet);
-	UFUNCTION(BlueprintCallable, Category = Setup)
-		void SetTurretReference(UTankTurret* BarrelToSet);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UPROPERTY(BlueprintReadWrite)
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
+	UPROPERTY(BlueprintReadWrite)
+	UTankBarrel* m_Barrel = nullptr;
 
 private:
 	// Called to bind functionality to input
@@ -42,8 +40,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 		TSubclassOf<AProjectile> m_sphereProjectile;
-
-	UTankBarrel* m_Barrel = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = ReloadTime)
 	float m_ReloadTimeInSeconds = 3.f;
 	double m_LastFireTime = 0;

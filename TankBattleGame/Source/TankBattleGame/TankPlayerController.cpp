@@ -2,6 +2,7 @@
 
 
 #include "TankPlayerController.h"
+#include "TankAimingComponent.h"
 #include "Engine/World.h"
 #include "Tank.h"
 
@@ -18,6 +19,16 @@ void ATankPlayerController::BeginPlay()
 	}else
 	{
 		UE_LOG(LogTemp,Warning, TEXT("couldn't find controlled Tank"));
+	}
+	auto aimingComponent = getControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if(aimingComponent)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("calling found AIMING COMPONENT"))
+		FoundAimingComponent(aimingComponent);
+		
+	}else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("COULDN'T FIND AIMING COMPONENT"))
 	}
 }
 
@@ -51,9 +62,9 @@ bool ATankPlayerController::getLookVectorHitLocation(FVector& hitLocation, const
 	}
 }
 
-void ATankPlayerController::AimTowardsCrosshair()
+bool ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!getControlledTank()) { return; }
+	if (!ensure(getControlledTank())) { return; } 
 
 	FVector HitLocation; //Out param
 	if (getSightRayHitLocation(HitLocation))

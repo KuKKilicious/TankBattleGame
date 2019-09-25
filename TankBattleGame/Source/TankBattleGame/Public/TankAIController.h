@@ -20,6 +20,8 @@ private:
 
 	virtual void Tick(float DeltaTime)override;
 
+	UPROPERTY(EditDefaultsOnly)
+		float m_MoveAcceptanceRadius = 30.f;
 };
 
 
