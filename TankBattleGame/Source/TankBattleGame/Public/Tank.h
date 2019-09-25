@@ -23,18 +23,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadWrite)
-		UTankBarrel* m_Barrel = nullptr;
 
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = Velocity)
-		float m_FiringVelocity = 50000.f;
-
-	UPROPERTY(EditAnywhere, Category = Setup)
-		TSubclassOf<AProjectile> m_sphereProjectile;
-	UPROPERTY(EditDefaultsOnly, Category = Firing, DisplayName = ReloadTime)
-	float m_ReloadTimeInSeconds = 3.f;
-	double m_LastFireTime = 0;
+	
 };
