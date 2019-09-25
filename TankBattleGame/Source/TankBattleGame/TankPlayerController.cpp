@@ -11,20 +11,12 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 
-	auto controlledTank = getControlledTank();
 
-	if (controlledTank)
-	{
-		UE_LOG(LogTemp,Warning, TEXT("Tank posessed, name: %s"), *controlledTank->GetName())
-	}else
-	{
-		UE_LOG(LogTemp,Warning, TEXT("couldn't find controlled Tank"));
-	}
-	auto aimingComponent = getControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if(aimingComponent)
+	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if(m_AimingComponent)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("calling found AIMING COMPONENT"))
-		FoundAimingComponent(aimingComponent);
+		FoundAimingComponent(m_AimingComponent);
 		
 	}else
 	{
@@ -37,12 +29,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	AimTowardsCrosshair();
 }
-ATank* ATankPlayerController::getControlledTank() const
-{
-	//UE_LOG(LogTemp, Warning, TEXT("controlledTank get"));
 
-	return Cast<ATank>(GetPawn());
-}
 
 bool ATankPlayerController::getLookVectorHitLocation(FVector& hitLocation, const FVector& lookDirection) const
 {
@@ -62,9 +49,10 @@ bool ATankPlayerController::getLookVectorHitLocation(FVector& hitLocation, const
 	}
 }
 
-bool ATankPlayerController::AimTowardsCrosshair()
+void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(getControlledTank())) { return; } 
+	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(m_AimingComponent)) { return; } 
 
 	FVector HitLocation; //Out param
 	if (getSightRayHitLocation(HitLocation))
@@ -72,7 +60,7 @@ bool ATankPlayerController::AimTowardsCrosshair()
 	// get world location of linetrace through crosshair hits something
 	//if it hits the landscape
 		//aim to the point
-		getControlledTank()->AimAt(HitLocation);
+		m_AimingComponent->AimAt(HitLocation);
 	}
 
 }

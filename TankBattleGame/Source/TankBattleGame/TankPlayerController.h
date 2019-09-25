@@ -20,14 +20,13 @@ public:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime)override;
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	ATank* getControlledTank() const;
+	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* aimingComponent);
 private:
 	bool getLookVectorHitLocation(FVector& hitLocation, const FVector& lookDirection) const;
 	bool getSightRayHitLocation(FVector& vector)const;
-	bool AimTowardsCrosshair();
+	void AimTowardsCrosshair();
 	bool getLookDirection(FVector2D screenLocation, FVector& LookDirection) const;
 private:
 	UPROPERTY(EditAnywhere)
@@ -36,4 +35,5 @@ private:
 		float m_CrosshairYLocation = 0.333333f;
 	UPROPERTY(EditAnywhere)
 		float m_LineTraceRange = 1000000.0f;//in cm
+	UTankAimingComponent* m_AimingComponent = nullptr;
 };

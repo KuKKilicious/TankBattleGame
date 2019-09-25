@@ -2,7 +2,6 @@
 
 
 #include "Public/Tank.h"
-#include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
 // Sets default values
@@ -13,11 +12,7 @@ ATank::ATank()
 
 }
 
-void ATank::AimAt(FVector aimLocation)
-{
-	if(!TankAimingComponent){return ;}
-	TankAimingComponent->AimAt(aimLocation,m_FiringVelocity);
-}
+
 
 
 

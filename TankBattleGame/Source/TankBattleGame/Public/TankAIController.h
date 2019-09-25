@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "TankAIController.generated.h"
-
+class ATank;
+class UTankAimingComponent;
 /**
  *
  */
-class ATank;
 UCLASS()
 class TANKBATTLEGAME_API ATankAIController : public AAIController
 {
@@ -22,6 +22,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		float m_MoveAcceptanceRadius = 30.f;
+
+	UTankAimingComponent* m_AimingComponent = nullptr;
+	ATank* m_ControlledTank = nullptr;
 };
 
 

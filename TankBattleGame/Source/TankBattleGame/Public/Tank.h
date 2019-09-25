@@ -10,7 +10,6 @@
 
 class UTankBarrel;
 class UTankTurret;
-class UTankAimingComponent;
 class AProjectile;
 UCLASS()
 class TANKBATTLEGAME_API ATank : public APawn
@@ -20,14 +19,11 @@ class TANKBATTLEGAME_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-	void AimAt(FVector aimLocation);
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadWrite)
-	UTankAimingComponent* TankAimingComponent = nullptr;
 
 	UPROPERTY(BlueprintReadWrite)
 	UTankBarrel* m_Barrel = nullptr;
