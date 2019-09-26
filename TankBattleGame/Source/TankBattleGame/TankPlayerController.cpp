@@ -20,7 +20,7 @@ void ATankPlayerController::BeginPlay()
 		
 	}else
 	{
-		UE_LOG(LogTemp,Warning,TEXT("COULDN'T FIND AIMING COMPONENT"))
+		UE_LOG(LogTemp,Warning,TEXT("COULDN'T FIND AIMING COMPONENT")) 
 	}
 }
 
@@ -31,26 +31,10 @@ void ATankPlayerController::Tick(float DeltaTime)
 }
 
 
-bool ATankPlayerController::getLookVectorHitLocation(FVector& hitLocation, const FVector& lookDirection) const
-{
-	FHitResult hit;
-	FVector cameraLocation = PlayerCameraManager->GetCameraLocation();
-	FVector Endpoint (cameraLocation+(lookDirection *m_LineTraceRange));
-	
-	if(GetWorld()->LineTraceSingleByChannel(hit,cameraLocation,Endpoint,ECC_Visibility))
-	{
-		hitLocation = hit.Location;
-		auto TankName = GetName();
-		return true;
-	}else
-	{
-		hitLocation = FVector(0);
-		return false;
-	}
-}
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
+	if(!GetPawn()){return;}
 	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(m_AimingComponent)) { return; } 
 
@@ -80,13 +64,28 @@ bool  ATankPlayerController::getSightRayHitLocation(FVector& hitLocation) const
 	//deproject crosshair pos to world direction
 	if(getLookDirection(screenLocation,lookDirection))
 	{
-		if( getLookVectorHitLocation(hitLocation,lookDirection))
-		{
-			return true;
-		}
+		return getLookVectorHitLocation(hitLocation,lookDirection);
 	}
 	hitLocation = FVector(0.f, 0.f, 0.f);
 	return false;
+}
+
+bool ATankPlayerController::getLookVectorHitLocation(FVector& hitLocation, const FVector& lookDirection) const
+{
+	FHitResult hit;
+	FVector cameraLocation = PlayerCameraManager->GetCameraLocation();
+	FVector Endpoint (cameraLocation+(lookDirection *m_LineTraceRange));
+	
+	if(GetWorld()->LineTraceSingleByChannel(hit,cameraLocation,Endpoint,ECC_Visibility))
+	{
+		hitLocation = hit.Location;
+		auto TankName = GetName();
+		return true;
+	}else
+	{
+		hitLocation = FVector(0);
+		return false;
+	}
 }
 //deproject crosshair pos to world direction out param @FVector lookDirection
 bool ATankPlayerController::getLookDirection(FVector2D screenLocation, FVector& LookDirection) const

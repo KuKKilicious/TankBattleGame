@@ -20,8 +20,8 @@ private:
 
 	virtual void Tick(float DeltaTime)override;
 
-	UPROPERTY(EditDefaultsOnly)
-		float m_MoveAcceptanceRadius = 30.f;
+	UPROPERTY(EditAnywhere)
+		float m_MoveAcceptanceRadius = 15000.f;
 
 	UTankAimingComponent* m_AimingComponent = nullptr;
 	ATank* m_ControlledTank = nullptr;
