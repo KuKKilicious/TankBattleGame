@@ -24,7 +24,6 @@ private:
 		float m_MoveAcceptanceRadius = 15000.f;
 
 	UTankAimingComponent* m_AimingComponent = nullptr;
-	ATank* m_ControlledTank = nullptr;
 };
 
 

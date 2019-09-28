@@ -6,8 +6,8 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	m_ControlledTank = Cast<ATank>(GetPawn());
-	m_AimingComponent = m_ControlledTank->FindComponentByClass<UTankAimingComponent>();
+	auto ControlledTank = GetPawn();
+	m_AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	if (!m_AimingComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("couldn't find controlled Tank in AI"));
@@ -17,12 +17,12 @@ void ATankAIController::BeginPlay()
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	m_ControlledTank = Cast<ATank>(GetPawn());
+	auto ControlledTank = GetPawn();
 	ATank* playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (playerTank && m_ControlledTank)
+	if (playerTank && ControlledTank)
 	{
 		MoveToActor(playerTank, m_MoveAcceptanceRadius);
-		m_AimingComponent = m_ControlledTank->FindComponentByClass<UTankAimingComponent>();
+		m_AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 		m_AimingComponent->AimAt(playerTank->GetTargetLocation());
 
 		//if aiming is locked
