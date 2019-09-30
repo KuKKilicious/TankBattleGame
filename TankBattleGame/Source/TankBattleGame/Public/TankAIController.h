@@ -23,7 +23,10 @@ private:
 	UPROPERTY(EditAnywhere)
 		float m_MoveAcceptanceRadius = 15000.f;
 
+	void SetPawn(APawn* InPawn) override;
 	UTankAimingComponent* m_AimingComponent = nullptr;
+	UFUNCTION()
+	void OnTankDeath();
 };
 
 
