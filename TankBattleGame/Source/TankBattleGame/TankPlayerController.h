@@ -36,5 +36,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		float m_LineTraceRange = 1000000.0f;//in cm
 	UTankAimingComponent* m_AimingComponent = nullptr;
-
+	void SetPawn(APawn* InPawn) override;
+	UFUNCTION()
+		void OnTankDeath();
 };

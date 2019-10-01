@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-
-
 #include "Tank.generated.h"
 
 
@@ -13,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
+
 UCLASS()
 class TANKBATTLEGAME_API ATank : public APawn
 {
@@ -37,5 +36,8 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UPROPERTY(VisibleAnywhere)
 		int32 m_TankHP = 100;
+	UPROPERTY(EditDefaultsOnly)
 	int32 m_StartingHealth = 100;
+
+
 };
