@@ -10,7 +10,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	if(!GetPawn()){UE_LOG(LogTemp,Error,TEXT("NO PAWN"));return;}
 
 	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if(m_AimingComponent)
