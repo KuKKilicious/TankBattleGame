@@ -31,13 +31,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+	UPROPERTY(BlueprintReadWrite)
+	int32 m_StartingHealth = 100;
 private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UPROPERTY(VisibleAnywhere)
 		int32 m_TankHP = 100;
-	UPROPERTY(EditDefaultsOnly)
-	int32 m_StartingHealth = 100;
 
 
 };
