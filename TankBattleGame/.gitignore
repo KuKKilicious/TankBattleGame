@@ -79,3 +79,5 @@ DerivedDataCache/*
 # Starter Content
 
 Content/StarterContent/*
+# ModBuilding
+Content/ModularBuildingSet/*
