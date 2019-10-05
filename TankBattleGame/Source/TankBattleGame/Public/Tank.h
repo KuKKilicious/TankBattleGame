@@ -23,7 +23,7 @@ public:
 	//returns health between 0 and 1
 	UFUNCTION(BlueprintPure, Category = "Health")
 		float getHealthPercent() const;
-
+	bool AddHealth(float value);
 
 
 protected:
@@ -38,6 +38,5 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UPROPERTY(VisibleAnywhere)
 		int32 m_TankHP = 100;
-
 
 };
