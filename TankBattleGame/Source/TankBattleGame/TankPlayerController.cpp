@@ -15,7 +15,6 @@ void ATankPlayerController::BeginPlay()
 	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if(m_AimingComponent)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("calling found AIMING COMPONENT"))
 		FoundAimingComponent(m_AimingComponent);
 		
 	}else

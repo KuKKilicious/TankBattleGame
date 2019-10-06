@@ -14,14 +14,18 @@ UCLASS()
 class TANKBATTLEGAME_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	float m_EngageRadius = 20000.f;
 private:
 	void BeginPlay() override;
 
 
+	bool IsInEngageRadius(ATank* player, APawn* thisTank);
 	virtual void Tick(float DeltaTime)override;
 
 	UPROPERTY(EditAnywhere)
-		float m_MoveAcceptanceRadius = 15000.f;
+		float m_MoveAcceptanceRadius = 5000.f;
 
 	UTankAimingComponent* m_AimingComponent = nullptr;
 	void SetPawn(APawn* InPawn) override;

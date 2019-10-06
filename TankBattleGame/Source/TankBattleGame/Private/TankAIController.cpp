@@ -14,12 +14,24 @@ void ATankAIController::BeginPlay()
 	}
 }
 
+bool ATankAIController::IsInEngageRadius(ATank* player, APawn* thisTank)
+{
+	if(player && thisTank)
+	{
+		auto distance = thisTank->GetDistanceTo(player);
+		return distance <= m_EngageRadius;
+	}
+	return false;
+}
+
+
+
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	auto ControlledTank = GetPawn();
 	ATank* playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (playerTank && ControlledTank)
+	if (playerTank && ControlledTank && IsInEngageRadius(playerTank,ControlledTank))
 	{
 		MoveToActor(playerTank, m_MoveAcceptanceRadius);
 		m_AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
