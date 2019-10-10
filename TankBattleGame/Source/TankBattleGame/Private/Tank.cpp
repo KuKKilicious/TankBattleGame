@@ -4,12 +4,12 @@
 #include "Public/Tank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
+#include "Particles/ParticleSystemComponent.h"
 // Sets default values
 ATank::ATank()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 
 
 }
@@ -18,6 +18,8 @@ float ATank::getHealthPercent() const
 {
 	return static_cast<float>(m_TankHP) / static_cast<float>(m_StartingHealth);
 }
+
+
 
 bool ATank::AddHealth(float value)
 {
@@ -29,11 +31,26 @@ bool ATank::AddHealth(float value)
 	return true;
 }
 
+void ATank::SetEngaged(bool engaged)
+{
+	m_Engaged = engaged;
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	m_TankHP = m_StartingHealth;
+}
+
+void ATank::Explode()
+{
+	auto deathBlast = FindComponentByClass<UParticleSystemComponent>();
+	if(deathBlast)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("OnDeathExplode"));
+	deathBlast->Activate();
+	}
 }
 
 float ATank::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -44,12 +61,18 @@ float ATank::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 
 	if (m_TankHP <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OnDeathBroadcast"));
+		Explode();
+		SetEngaged(false);
 		onTankDeath.Broadcast();
 	}
 	return damage;
 }
 
+
+bool ATank::HasEngaged() const
+{
+	return m_Engaged;
+}
 
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

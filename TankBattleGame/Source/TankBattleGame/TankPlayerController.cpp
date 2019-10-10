@@ -5,13 +5,15 @@
 #include "TankAimingComponent.h"
 #include "Engine/World.h"
 #include "Tank.h"
+#include "TankMovementComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
 	if(!GetPawn()){UE_LOG(LogTemp,Error,TEXT("NO PAWN"));return;}
-
+	auto controlledTank = Cast<ATank>(GetPawn());
+	controlledTank->SetEngaged(true);
 	m_AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if(m_AimingComponent)
 	{
@@ -45,13 +47,10 @@ void ATankPlayerController::AimTowardsCrosshair()
 		//aim to the point
 		m_AimingComponent->AimAt(HitLocation);
 	}
-
 }
 
 bool  ATankPlayerController::getSightRayHitLocation(FVector& hitLocation) const
 {
-	
-
 	FHitResult outHit;
 
 	//find crosshair pos
@@ -101,7 +100,6 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 	{
 		auto possessedTank = Cast<ATank>(InPawn);
 		if (!ensure(possessedTank)) { return; }
-		//TODO: Subscribe local method to OnDeath
 		possessedTank->onTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnTankDeath);
 
 	}
@@ -109,6 +107,12 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 
 void ATankPlayerController::OnTankDeath()
 {
-	StartSpectatingOnly();
+	auto possessedTank = Cast<ATank>(GetPawn());
+	if(!possessedTank){return;}
+	auto tankmovement = possessedTank->FindComponentByClass<UTankMovementComponent>();
+	if(!tankmovement){return;}
+	tankmovement->disableMovement();
+	
+	//StartSpectatingOnly();
 }
 

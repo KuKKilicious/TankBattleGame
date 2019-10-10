@@ -16,7 +16,7 @@ void ATankAIController::BeginPlay()
 
 bool ATankAIController::IsInEngageRadius(ATank* player, APawn* thisTank)
 {
-	if(player && thisTank)
+	if (player && thisTank)
 	{
 		auto distance = thisTank->GetDistanceTo(player);
 		return distance <= m_EngageRadius;
@@ -29,16 +29,18 @@ bool ATankAIController::IsInEngageRadius(ATank* player, APawn* thisTank)
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	auto ControlledTank = GetPawn();
+	auto ControlledTank = Cast<ATank>(GetPawn());
 	ATank* playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (playerTank && ControlledTank && IsInEngageRadius(playerTank,ControlledTank))
+	if (playerTank && ControlledTank && IsInEngageRadius(playerTank, ControlledTank)) //engaging
 	{
+		
+		ControlledTank->SetEngaged(true);
 		MoveToActor(playerTank, m_MoveAcceptanceRadius);
 		m_AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 		m_AimingComponent->AimAt(playerTank->GetTargetLocation());
 
 		//if aiming is locked
-		if (m_AimingComponent->getFiringStatus() == EFiringStatus::Locked)
+		if (m_AimingComponent->getFiringStatus() == EFiringStatus::Locked && m_AimingComponent->isPlayerInSight())
 		{
 			m_AimingComponent->Fire();
 		}
@@ -49,12 +51,12 @@ void ATankAIController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn);
 
-	if(InPawn)
+	if (InPawn)
 	{
 		auto possessedTank = Cast<ATank>(InPawn);
-		if(!ensure(possessedTank)){return;}
+		if (!ensure(possessedTank)) { return; }
 		//TODO: Subscribe local method to OnDeath
-		possessedTank->onTankDeath.AddUniqueDynamic(this,&ATankAIController::OnTankDeath);
+		possessedTank->onTankDeath.AddUniqueDynamic(this, &ATankAIController::OnTankDeath);
 
 	}
 }
@@ -62,6 +64,10 @@ void ATankAIController::SetPawn(APawn* InPawn)
 void ATankAIController::OnTankDeath()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ONTANKDEATH AI"));
-	GetPawn()->DetachFromControllerPendingDestroy();
+	auto ControlledTank = Cast <ATank>(GetPawn());
+	if (ControlledTank)
+	{
+		GetPawn()->DetachFromControllerPendingDestroy();
+	}
 }
 
