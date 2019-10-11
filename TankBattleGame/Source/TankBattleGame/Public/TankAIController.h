@@ -24,6 +24,8 @@ private:
 	bool IsInEngageRadius(ATank* player, APawn* thisTank);
 	virtual void Tick(float DeltaTime)override;
 
+	bool IsPlayerInSight();
+
 	UPROPERTY(EditAnywhere)
 		float m_MoveAcceptanceRadius = 5000.f;
 

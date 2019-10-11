@@ -3,6 +3,7 @@
 #include "Public/TankAIController.h"
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "Perception/AIPerceptionComponent.h"
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -40,11 +41,30 @@ void ATankAIController::Tick(float DeltaTime)
 		m_AimingComponent->AimAt(playerTank->GetTargetLocation());
 
 		//if aiming is locked
-		if (m_AimingComponent->getFiringStatus() == EFiringStatus::Locked && m_AimingComponent->isPlayerInSight())
+		if (m_AimingComponent->getFiringStatus() == EFiringStatus::Locked && IsPlayerInSight())
 		{
 			m_AimingComponent->Fire();
 		}
 	}
+}
+
+bool ATankAIController::IsPlayerInSight()
+{
+	auto ControlledTank = Cast<ATank>(GetPawn());
+	if(!ControlledTank){return false;}
+	UAIPerceptionComponent* sightPerception = ControlledTank->FindComponentByClass<UAIPerceptionComponent>();
+	ATank* playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if(!playerTank || !sightPerception){return false;}
+	TArray<AActor*> outActors;
+	sightPerception->GetPerceivedActors(sightPerception->GetDominantSense(),outActors);
+	for(AActor* actor : outActors)
+	{
+		auto actorName = actor->GetName();
+		if(actor == playerTank){
+			return true;
+		}
+	}
+	return false;
 }
 
 void ATankAIController::SetPawn(APawn* InPawn)
