@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "TankAimingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "TimerManager.h"
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -32,7 +33,7 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	auto ControlledTank = Cast<ATank>(GetPawn());
 	ATank* playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (playerTank && ControlledTank && IsInEngageRadius(playerTank, ControlledTank)) //engaging
+	if (m_isAlive && playerTank && ControlledTank && IsInEngageRadius(playerTank, ControlledTank)) //engaging
 	{
 		
 		ControlledTank->SetEngaged(true);
@@ -87,7 +88,14 @@ void ATankAIController::OnTankDeath()
 	auto ControlledTank = Cast <ATank>(GetPawn());
 	if (ControlledTank)
 	{
-		GetPawn()->DetachFromControllerPendingDestroy();
+		FTimerHandle timerHandle;
+		GetWorld()->GetTimerManager().SetTimer(timerHandle,this,&ATankAIController::DestroyPawn,5,true);
+		m_isAlive = false;
 	}
+}
+
+void ATankAIController::DestroyPawn()
+{
+	GetPawn()->Destroy();
 }
 

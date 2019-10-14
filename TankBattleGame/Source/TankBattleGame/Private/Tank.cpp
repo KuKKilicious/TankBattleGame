@@ -64,6 +64,8 @@ float ATank::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 		Explode();
 		SetEngaged(false);
 		onTankDeath.Broadcast();
+	}else{
+	SetEngaged(true);
 	}
 	return damage;
 }

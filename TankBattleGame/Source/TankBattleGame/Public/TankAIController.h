@@ -16,7 +16,7 @@ class TANKBATTLEGAME_API ATankAIController : public AAIController
 	GENERATED_BODY()
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	float m_EngageRadius = 20000.f;
+	float m_EngageRadius = 10000.f;
 private:
 	void BeginPlay() override;
 
@@ -33,6 +33,10 @@ private:
 	void SetPawn(APawn* InPawn) override;
 	UFUNCTION()
 	void OnTankDeath();
+
+	void DestroyPawn();
+
+	bool m_isAlive = true;
 };
 
 
